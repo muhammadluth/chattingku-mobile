@@ -1,12 +1,19 @@
 import React, {Component} from 'react';
-import {Container, Header, Content, Button, Text} from 'native-base';
+import {Linking} from 'react-native';
+import {Container, Content, Button, Text} from 'native-base';
+import Header from '../Components/Header';
 export default class Splashscreen extends Component {
   render() {
     return (
       <Container>
         <Header />
         <Content>
-          <Text>Ini Maps</Text>
+          <Button
+            onPress={() =>
+              Linking.openURL('https://goo.gl/maps/h6quTg9HKV2hUVSj8')
+            }>
+            <Text>Ini Maps</Text>
+          </Button>
         </Content>
       </Container>
     );

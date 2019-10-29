@@ -14,57 +14,85 @@ import {
   Footer,
   Left,
 } from 'native-base';
-import Header from './Header';
+import Header from './HeaderChat';
+import DataChat from './DataChat';
+import {GiftedChat} from 'react-native-gifted-chat';
 export default class ListCard extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      messages: [],
+    };
+  }
+
+  componentWillMount() {
+    this.setState({
+      messages: [
+        {
+          _id: 1,
+          text: 'Hello developer',
+          createdAt: new Date(),
+          user: {
+            _id: 2,
+            name: 'React Native',
+            avatar: 'https://placeimg.com/140/140/any',
+          },
+        },
+      ],
+    });
+  }
+
+  onSend(messages = []) {
+    this.setState(previousState => ({
+      messages: GiftedChat.append(previousState.messages, messages),
+    }));
+  }
   render() {
     return (
       <Container>
         <Header {...this.props} />
-        <Content>
-          <View style={{flexDirection: 'row'}}>
-            <Card>
-              <CardItem>
-                <Icon active name="logo-googleplus" />
-                <Text>Google Plus</Text>
-                <Right>
-                  <Icon name="arrow-forward" />
-                </Right>
-              </CardItem>
-            </Card>
-          </View>
-          <View style={{flexDirection: 'row'}}>
-            <Row>
-              <Col size={20}>
-                <Card>
-                  <CardItem>
-                    <Icon active name="logo-googleplus" />
-                    <Text>Google Plus</Text>
-                    <Right>
-                      <Icon name="arrow-forward" />
-                    </Right>
-                  </CardItem>
-                </Card>
-              </Col>
-            </Row>
-          </View>
+        <GiftedChat
+          messages={this.state.messages}
+          onSend={messages => this.onSend(messages)}
+          user={{
+            _id: 1,
+          }}
+        />
+        {/* <Content>
+          <DataChat />
         </Content>
-        <Footer style={{backgroundColor: '#fff'}}>
+        <Footer
+          style={{
+            borderTopRightRadius: 30,
+            borderTopLeftRadius: 30,
+            backgroundColor: '#bdc3c7',
+          }}>
           <View style={{flexDirection: 'row'}}>
             <View style={{width: '100%'}}>
               <Row>
-                <Col>
+                <Col size={2} style={{margin: 13}}>
                   <Icon type="Ionicons" name="ios-add-circle" />
                 </Col>
-                <Col>
+                <Col size={18}>
                   <Input
                     placeholder={'Ketik Pesan'}
-                    style={{borderColor: 'black'}}
+                    style={{borderColor: 'black', backgroundColor: '#ecf0f1'}}
                   />
                 </Col>
+                <Col size={2} style={{margin: 13}}>
+                  <Icon type={'Ionicons'} name={'ios-send'} />
+                </Col>
               </Row>
+              <GiftedChat
+                messages={this.props.messages}
+                onSend={messages => this.onSend(messages)}
+                user={{
+                  _id: 1,
+                }}
+              />
             </View>
           </View>
-        </Footer>
+        </Footer> */}
       </Container>
     );
   }

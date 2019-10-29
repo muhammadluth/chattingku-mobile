@@ -5,30 +5,60 @@ import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createMaterialBottomTabNavigator} from 'react-navigation-material-bottom-tabs';
 import Splashscreen from './Screens/Splashscreen';
+import Login from './Auth/Login';
+import Register from './Auth/Register';
 import Home from './Screens/Home';
+import Contact from './Screens/Contact';
 import Maps from './Screens/Maps';
-import Profile from './Screens/Profile';
-import ListCard from './Components/ListChat';
+import Account from './Screens/Account';
+import ListChat from './Components/ListChat';
+import Profile from './Components/Profile';
+import AddContact from './Components/AddContact';
 
 const MainNavigator = createStackNavigator(
   {
-    // Login: {screen: Login},
     Splashscreen: {screen: Splashscreen},
-    ListCard: {screen: ListCard},
+    Login: {screen: Login},
+    Register: {screen: Register},
+    ListChat: {screen: ListChat},
+    Profile: {screen: Profile},
+    AddContact: {screen: AddContact},
 
     Index: createMaterialBottomTabNavigator({
       Home: {
         screen: Home,
         navigationOptions: {
-          tabBarLabel: 'Home',
+          tabBarLabel: 'Chat',
           tabBarIcon: ({tintColor}) => (
             <View>
-              <Icon style={[{color: tintColor}]} size={25} name={'ios-home'} />
+              <Icon
+                style={[{color: tintColor}]}
+                size={25}
+                name={'ios-chatboxes'}
+              />
             </View>
           ),
           activeColor: '#f0edf6',
           inactiveColor: '#226557',
           barStyle: {backgroundColor: '#3BAD87'},
+        },
+      },
+      Contact: {
+        screen: Contact,
+        navigationOptions: {
+          tabBarLabel: 'Contact',
+          tabBarIcon: ({tintColor}) => (
+            <View>
+              <Icon
+                style={[{color: tintColor}]}
+                size={25}
+                name={'ios-contacts'}
+              />
+            </View>
+          ),
+          activeColor: '#f0edf6',
+          inactiveColor: '#226557',
+          barStyle: {backgroundColor: '#7158e2'},
         },
       },
       Maps: {
@@ -45,10 +75,10 @@ const MainNavigator = createStackNavigator(
           barStyle: {backgroundColor: '#67baf6'},
         },
       },
-      Profile: {
-        screen: Profile,
+      Account: {
+        screen: Account,
         navigationOptions: {
-          tabBarLabel: 'Profile',
+          tabBarLabel: 'Account',
           tabBarIcon: ({tintColor}) => (
             <View>
               <Icon
