@@ -13,10 +13,18 @@ import {
   Left,
   Right,
   Body,
+  Toast,
 } from 'native-base';
 import {Image, Linking, AsyncStorage} from 'react-native';
 import Header from '../Components/Header';
+import firebase from 'firebase';
 export default class Account extends Component {
+  onLogOut = async () => {
+    logOut = async () => {
+      firebase.auth().signOut();
+      this.props.navigation.navigate('Login');
+    };
+  };
   render() {
     let email = AsyncStorage.getItem('email');
     console.log(email);
@@ -79,7 +87,7 @@ export default class Account extends Component {
                     <Left>
                       <Button
                         style={{backgroundColor: '#007AFF'}}
-                        onPress={() => this.props.navigation.navigate('Login')}>
+                        onPress={this.onLogOut}>
                         <Icon type={'Ionicons'} name="ios-log-out" />
                       </Button>
                       <View style={{paddingHorizontal: 10}}>

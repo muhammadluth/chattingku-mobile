@@ -22,13 +22,28 @@ class FirebaseSDK {
       .signInWithEmailAndPassword(user.email, user.password)
       .then(success_callback, failed_callback);
   };
-  logOut = async user => {
+
+  register = async (user, success_callback, failed_callback) => {
     await firebase
       .auth()
-      .signOut(user.email, user.password)
-      .then(function() {})
-      .catch(function(error) {});
+      .createUserWithEmailAndPassword(user.email, user.password)
+      .then(success_callback, failed_callback);
   };
+  send = messages => {
+    for (let i = 0; i < messages.length; i++) {
+      const {text, user} = messages[i];
+      const message = {text, user, createdAt: this.timestamp};
+      this.ref.push(message);
+    }
+  };
+  readUserData() {
+    firebase
+      .database()
+      .ref('Users/')
+      .once('value', function(snapshot) {
+        console.log(snapshot.val());
+      });
+  }
 }
 const firebaseSDK = new FirebaseSDK();
 export default firebaseSDK;

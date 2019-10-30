@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, FlatList} from 'react-native';
 import {
   Container,
   Content,
@@ -18,31 +18,42 @@ import {
   View,
 } from 'native-base';
 import Header from '../Components/Header';
+import firebase from 'firebase';
 export default class Contact extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      messages: [],
+      users: [],
     };
   }
 
-  componentWillMount() {
-    this.setState({
-      messages: [
-        {
-          _id: 1,
-          text: 'Hello developer',
-          createdAt: new Date(),
-          user: {
-            _id: 2,
-            name: 'React Native',
-            avatar: 'https://placeimg.com/140/140/any',
-          },
-        },
-      ],
-    });
+  componentDidMount() {
+    // let dbRef = firebase.database().ref('User/');
+    // dbRef.on('child_added', val => {
+    //   let contact = val.val();
+    //   contact.username = val.key;
+    //   contact.avatar = val.key;
+    //   this.setState(prevState => {
+    //     return {
+    //       users: [...prevState.users, contact],
+    //     };
+    //   });
+    // });
+    firebase
+      .database()
+      .ref('User')
+      .on('value', data => {
+        let arraydata = [];
+        data.forEach(key => {
+          arraydata.push(key);
+        });
+        this.setState({users: arraydata});
+      });
   }
   render() {
+    console.log(this.state.users);
+    // let data = JSON.parse(JSON.stringify(item));
+
     return (
       <Container>
         <Header {...this.props} />
@@ -85,21 +96,37 @@ export default class Contact extends Component {
                 <Text>M</Text>
               </ListItem>
             </List>
-            <Card>
-              <ListItem
-                avatar
-                onPress={() => this.props.navigation.navigate('Profile')}>
-                <Left>
-                  <Thumbnail source={require('../Assets/images/profile.png')} />
-                </Left>
-                <Body>
-                  <View style={{paddingTop: 10}}>
-                    <Text>Muhammad Luthfi</Text>
-                    <Text note>Di Kantor</Text>
-                  </View>
-                </Body>
-              </ListItem>
-            </Card>
+            <FlatList
+              data={this.state.users}
+              keyExtractor={item => {
+                let data = JSON.parse(JSON.stringify(item));
+                return data.id;
+              }}
+              renderItem={({item, key}) => {
+                let data = JSON.parse(JSON.stringify(item));
+                let Image_Http_URL = {uri: data.avatar};
+                return (
+                  <Card>
+                    <ListItem
+                      avatar
+                      onPress={() => this.props.navigation.navigate('Profile')}>
+                      <Left>
+                        <Thumbnail
+                          style={{marginVertical: -6}}
+                          source={Image_Http_URL}
+                        />
+                      </Left>
+                      <Body>
+                        <View style={{paddingTop: 5}}>
+                          <Text>{data.username}</Text>
+                          <Text note>Di Kantor</Text>
+                        </View>
+                      </Body>
+                    </ListItem>
+                  </Card>
+                );
+              }}
+            />
           </List>
         </Content>
       </Container>

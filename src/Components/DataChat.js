@@ -22,7 +22,7 @@ export default class ListCard extends Component {
     messages: [],
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.setState({
       messages: [
         {

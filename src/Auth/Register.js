@@ -16,6 +16,7 @@ import {StyleSheet, Image} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import PasswordInputText from 'react-native-hide-show-password-input';
 import firebaseSDK from '../Public/Firebase/config/firebaseSDK';
+import firebase from 'firebase';
 
 export default class Register extends Component {
   constructor(props) {
@@ -26,22 +27,49 @@ export default class Register extends Component {
       phoneNumber: '',
       email: '',
       password: '',
-      avatar: '',
+      // avatar: '',
     };
   }
 
   onPressCreate = async () => {
-    try {
-      const user = {
-        username: this.state.name,
-        phoneNumber: this.state.phoneNumber,
-        email: this.state.email,
-        password: this.state.password,
-      };
-      await firebaseSDK.createAccount(user);
-    } catch ({message}) {
-      console.log('create account failed. catch error:' + message);
-    }
+    const user = {
+      username: this.state.username,
+      phoneNumber: this.state.phoneNumber,
+      email: this.state.email,
+      password: this.state.password,
+    };
+    // await firebaseSDK.register(user);
+    const response = firebaseSDK.register(
+      user,
+      this.registerSuccess,
+      this.registerFailed,
+    );
+  };
+
+  registerSuccess = () => {
+    console.log('Register successful, navigate to chat.');
+    const user = {
+      avatar: `https://ui-avatars.com/api/?size=256&rounded=true&name=${this.state.username.replace(
+        ' ',
+        '+',
+      )}`,
+      username: this.state.username,
+      phoneNumber: this.state.phoneNumber,
+      email: this.state.email,
+      password: this.state.password,
+    };
+
+    var userf = firebase.auth().currentUser;
+    userf.updateProfile({displayName: this.state.username});
+    firebase
+      .database()
+      .ref('User')
+      .push(user);
+    this.props.navigation.navigate('Login');
+  };
+
+  registerFailed = () => {
+    alert('Register failure. Please tried again.');
   };
 
   onChangeTextEmail = email => this.setState({email});
@@ -113,7 +141,7 @@ export default class Register extends Component {
                     <View style={styles.Button}>
                       <Button
                         style={{borderRadius: 10}}
-                        onPress={() => this.props.navigation.navigate('Login')}>
+                        onPress={this.onPressCreate}>
                         <Text>Sign Up</Text>
                       </Button>
                     </View>
