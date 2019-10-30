@@ -14,10 +14,12 @@ import {
   Right,
   Body,
 } from 'native-base';
-import {Image, Linking} from 'react-native';
+import {Image, Linking, AsyncStorage} from 'react-native';
 import Header from '../Components/Header';
 export default class Account extends Component {
   render() {
+    let email = AsyncStorage.getItem('email');
+    console.log(email);
     return (
       <Container>
         <Header />

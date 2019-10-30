@@ -15,8 +15,39 @@ import {
 import {StyleSheet, Image} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import PasswordInputText from 'react-native-hide-show-password-input';
+import firebaseSDK from '../Public/Firebase/config/firebaseSDK';
 
 export default class Register extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      messages: [],
+      username: '',
+      phoneNumber: '',
+      email: '',
+      password: '',
+      avatar: '',
+    };
+  }
+
+  onPressCreate = async () => {
+    try {
+      const user = {
+        username: this.state.name,
+        phoneNumber: this.state.phoneNumber,
+        email: this.state.email,
+        password: this.state.password,
+      };
+      await firebaseSDK.createAccount(user);
+    } catch ({message}) {
+      console.log('create account failed. catch error:' + message);
+    }
+  };
+
+  onChangeTextEmail = email => this.setState({email});
+  onChangeTextPassword = password => this.setState({password});
+  onChangeTextName = username => this.setState({username});
+  onChangeTextPhone = phoneNumber => this.setState({phoneNumber});
   render() {
     return (
       <Container>
@@ -39,6 +70,7 @@ export default class Register extends Component {
                       fontWeight: 'bold',
                       fontSize: 28,
                       paddingBottom: 20,
+                      paddingTop: 20,
                     }}>
                     Sign Up
                   </Title>
@@ -48,8 +80,8 @@ export default class Register extends Component {
                     <Item floatingLabel style={styles.Items}>
                       <Label>Username</Label>
                       <Input
-                        // onChangeText={text => setEmail(text)}
-                        // value={email}
+                        onChangeText={this.onChangeTextName}
+                        value={this.state.username}
                         keyboardType="default"
                         autoCapitalize="none"
                       />
@@ -57,8 +89,8 @@ export default class Register extends Component {
                     <Item floatingLabel style={styles.Items}>
                       <Label>No.Telephone</Label>
                       <Input
-                        // onChangeText={text => setEmail(text)}
-                        // value={email}
+                        onChangeText={this.onChangeTextPhone}
+                        value={this.state.phoneNumber}
                         keyboardType="name-phone-pad"
                         autoCapitalize="none"
                       />
@@ -66,15 +98,15 @@ export default class Register extends Component {
                     <Item floatingLabel style={styles.Items}>
                       <Label>Email</Label>
                       <Input
-                        // onChangeText={text => setEmail(text)}
-                        // value={email}
+                        onChangeText={this.onChangeTextEmail}
+                        value={this.state.email}
                         keyboardType="email-address"
                         autoCapitalize="none"
                       />
                     </Item>
                     <PasswordInputText
-                    // onChangeText={text => setPassword(text)}
-                    // value={password}
+                      onChangeText={this.onChangeTextPassword}
+                      value={this.state.password}
                     />
                   </View>
                   <View style={styles.ViewButton}>
