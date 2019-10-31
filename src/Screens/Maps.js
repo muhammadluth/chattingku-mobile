@@ -42,6 +42,8 @@ class Maps extends Component {
               latitude: child.val().latitude,
               longitude: child.val().longitude,
               username: child.val().username,
+              email: child.val().email,
+              phoneNumber: child.val().phoneNumber,
             },
             ...arraydata,
           ];
@@ -131,6 +133,14 @@ class Maps extends Component {
                   longitude: item.longitude,
                 }}
                 title={item.username}
+                onPress={() =>
+                  this.props.navigation.navigate('BioMaps', {
+                    avatar: item.avatar,
+                    username: item.username,
+                    email: item.email,
+                    phoneNumber: item.phoneNumber,
+                  })
+                }
               />
             );
           })}

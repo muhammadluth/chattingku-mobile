@@ -14,6 +14,7 @@ import Account from './Screens/Account';
 import ListChat from './Components/ListChat';
 import Profile from './Components/Profile';
 import AddContact from './Components/AddContact';
+import BioMaps from './Components/BioMaps';
 
 const MainNavigator = createStackNavigator(
   {
@@ -23,6 +24,7 @@ const MainNavigator = createStackNavigator(
     ListChat: {screen: ListChat},
     Profile: {screen: Profile},
     AddContact: {screen: AddContact},
+    BioMaps: {screen: BioMaps},
 
     Index: createMaterialBottomTabNavigator({
       Home: {

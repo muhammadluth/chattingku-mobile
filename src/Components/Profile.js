@@ -25,14 +25,13 @@ export default class Profile extends Component {
     super(props);
     this.state = {
       users: [],
-      avatar: this.props.navigation.getParam('avarar'),
+      avatar: this.props.navigation.getParam('avatar'),
       username: this.props.navigation.getParam('username'),
       email: this.props.navigation.getParam('email'),
       phoneNumber: this.props.navigation.getParam('phoneNumber'),
     };
   }
   render() {
-    console.log(this.state.username);
     let Image_Http_URL = {
       uri: `https://ui-avatars.com/api/?size=256&rounded=true&name=${this.state.username}`,
     };

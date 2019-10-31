@@ -37,6 +37,7 @@ export default class Home extends Component {
       });
   }
   render() {
+    console.log(this.state.users);
     return (
       <Container>
         <Header {...this.props} />
@@ -69,9 +70,7 @@ export default class Home extends Component {
                       </Left>
                       <Body>
                         <Text>{data.username}</Text>
-                        <Text note>
-                          Doing what you like will always keep you happy . .
-                        </Text>
+                        <Text note>{data.phoneNumber}</Text>
                       </Body>
                       <Right>
                         <Text note>3:43 pm</Text>
