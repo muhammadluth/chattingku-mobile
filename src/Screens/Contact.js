@@ -24,21 +24,14 @@ export default class Contact extends Component {
     super(props);
     this.state = {
       users: [],
+      avatar: '',
+      username: '',
+      email: '',
+      phoneNumber: '',
     };
   }
 
   componentDidMount() {
-    // let dbRef = firebase.database().ref('User/');
-    // dbRef.on('child_added', val => {
-    //   let contact = val.val();
-    //   contact.username = val.key;
-    //   contact.avatar = val.key;
-    //   this.setState(prevState => {
-    //     return {
-    //       users: [...prevState.users, contact],
-    //     };
-    //   });
-    // });
     firebase
       .database()
       .ref('User')
@@ -52,6 +45,7 @@ export default class Contact extends Component {
   }
   render() {
     console.log(this.state.users);
+    console.log(this.state.avatar);
     // let data = JSON.parse(JSON.stringify(item));
 
     return (
@@ -106,10 +100,18 @@ export default class Contact extends Component {
                 let data = JSON.parse(JSON.stringify(item));
                 let Image_Http_URL = {uri: data.avatar};
                 return (
-                  <Card>
+                  <Card style={{borderRadius: 10}}>
                     <ListItem
                       avatar
-                      onPress={() => this.props.navigation.navigate('Profile')}>
+                      onPress={() =>
+                        this.props.navigation.navigate('Profile', {
+                          userID: key,
+                          avatar: data.avatar,
+                          username: data.username,
+                          email: data.email,
+                          phoneNumber: data.phoneNumber,
+                        })
+                      }>
                       <Left>
                         <Thumbnail
                           style={{marginVertical: -6}}

@@ -19,25 +19,33 @@ import {Image, Linking, AsyncStorage} from 'react-native';
 import Header from '../Components/Header';
 import firebase from 'firebase';
 export default class Account extends Component {
-  onLogOut = async () => {
-    logOut = async () => {
-      firebase.auth().signOut();
-      this.props.navigation.navigate('Login');
-    };
+  logOut = async () => {
+    await firebase.auth().signOut();
+    this.props.navigation.navigate('Login');
   };
+
   render() {
-    let email = AsyncStorage.getItem('email');
-    console.log(email);
+    var user = firebase.auth().currentUser;
+    var username, phoneNumber, email;
+
+    if (user != null) {
+      username = user.displayName;
+      email = user.email;
+      // phoneNumber = user.;
+    }
+    let Image_Http_URL = {
+      uri: `https://ui-avatars.com/api/?size=256&rounded=true&name=${username}`,
+    };
     return (
       <Container>
         <Header />
         <Content>
           <View>
-            <Card>
+            <Card style={{}}>
               <View style={{alignItems: 'center'}}>
                 <Image
-                  style={{width: 120, height: 120}}
-                  source={require('../Assets/images/profile.png')}
+                  style={{width: 120, height: 120, marginTop: 20}}
+                  source={Image_Http_URL}
                 />
               </View>
               <View style={{alignItems: 'center'}}>
@@ -47,7 +55,7 @@ export default class Account extends Component {
                     fontWeight: 'bold',
                     paddingVertical: 20,
                   }}>
-                  MUHAMMAD LUTHFI
+                  {username}
                 </Text>
               </View>
             </Card>
@@ -65,14 +73,16 @@ export default class Account extends Component {
                       onPress={() =>
                         Linking.openURL('mailto:muhammadluthfi059@gmail.com')
                       }>
-                      muhammadluthfi059@gmail.com
+                      {email}
                     </Text>
                     <Text style={{fontSize: 14}}>Email</Text>
                   </View>
                 </CardItem>
                 <CardItem>
                   <View>
-                    <Text onPress={() => Linking.openURL('tel:+6281392371406')}>
+                    <Text
+                      style={{color: '#000'}}
+                      onPress={() => Linking.openURL('tel:+6281392371406')}>
                       +6281392371406
                     </Text>
                     <Text style={{fontSize: 14}}>Ponsel</Text>
@@ -87,7 +97,7 @@ export default class Account extends Component {
                     <Left>
                       <Button
                         style={{backgroundColor: '#007AFF'}}
-                        onPress={this.onLogOut}>
+                        onPress={this.logOut}>
                         <Icon type={'Ionicons'} name="ios-log-out" />
                       </Button>
                       <View style={{paddingHorizontal: 10}}>

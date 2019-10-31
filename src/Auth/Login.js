@@ -76,7 +76,7 @@ export default class Login extends Component {
               />
             </View>
             <View style={styles.Card}>
-              <Card>
+              <Card style={{borderRadius: 20}}>
                 <View>
                   <Title
                     style={{
@@ -142,6 +142,7 @@ const styles = StyleSheet.create({
   Card: {
     elevation: 0,
     margin: 10,
+    borderRadius: 20,
   },
   ViewButton: {
     flexDirection: 'row',

@@ -16,47 +16,94 @@ import {
 } from 'native-base';
 import Header from './HeaderChat';
 import DataChat from './DataChat';
-import {GiftedChat} from 'react-native-gifted-chat';
+import {GiftedChat, Message} from 'react-native-gifted-chat';
+import firebaseSDK from '../Public/Firebase/config/firebaseSDK';
+import firebase from 'firebase';
 export default class ListCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      messages: [],
+      Messages: [],
+      TextMessages: [],
+      avatar: this.props.navigation.getParam('avarar'),
+      username: this.props.navigation.getParam('username'),
+      email: this.props.navigation.getParam('email'),
+      phoneNumber: this.props.navigation.getParam('phoneNumber'),
+      userON: firebase.auth().currentUser.displayName,
+      emailON: firebase.auth().currentUser.email,
+      avatarON: firebase.auth().currentUser.photoURL,
+      currentUser: firebase.auth().currentUser.uid,
     };
   }
 
-  // componentDidMount() {
-  //   this.setState({
-  //     messages: [
-  //       {
-  //         _id: 1,
-  //         text: 'Hello developer',
-  //         createdAt: new Date(),
-  //         user: {
-  //           _id: 2,
-  //           name: 'React Native',
-  //           avatar: 'https://placeimg.com/140/140/any',
-  //         },
-  //       },
-  //     ],
-  //   });
-  // }
+  userData = () => {
+    return {
+      name: this.state.userON,
+      email: this.state.emailON,
+      avatar: this.state.avatarON,
+      id: this.state.currentUser,
+      _id: this.state.currentUser,
+    };
+  };
 
-  onSend(messages = []) {
-    this.setState(previousState => ({
-      messages: GiftedChat.append(previousState.messages, messages),
-    }));
+  OnPressSend = async messages => {
+    for (let i = 0; i < messages.length; i++) {
+      const {text, user} = messages[i];
+      const message = {
+        text,
+        user,
+        createdAt: firebase.database.ServerValue.TIMESTAMP,
+      };
+      await firebase
+        .database()
+        .ref(`Messages/${this.state.userON}/${this.state.username}/`)
+        .push(message);
+      firebase
+        .database()
+        .ref(`Messages/${this.state.username}/${this.state.userON}/`)
+        .push(message);
+    }
+  };
+  componentDidMount() {
+    firebase
+      .database()
+      .ref(`Messages/${this.state.username}/${this.state.userON}/`)
+      .on('value', data => {
+        var message = [];
+        data.forEach(child => {
+          message = [
+            {
+              _id: child.key,
+              text: child.val().text,
+              createdAt: child.val().createdAt,
+              user: {
+                _id: child.val().user._id,
+                name: child.val().user.name,
+              },
+            },
+            ...message,
+          ];
+        });
+        this.setState({Messages: message});
+      });
   }
+
   render() {
+    console.log(this.state.userON);
     return (
       <Container>
-        <Header {...this.props} />
+        <Header
+          {...this.props}
+          username={this.state.username}
+          email={this.state.email}
+          avatar={this.state.avatar}
+          phoneNumber={this.state.phoneNumber}
+        />
+
         <GiftedChat
-          messages={this.state.messages}
-          onSend={messages => this.onSend(messages)}
-          user={{
-            _id: 1,
-          }}
+          messages={this.state.Messages}
+          user={this.userData()}
+          onSend={Messages => this.OnPressSend(Messages)}
         />
         {/* <Content>
           <DataChat />

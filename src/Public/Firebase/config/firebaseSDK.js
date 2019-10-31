@@ -29,13 +29,7 @@ class FirebaseSDK {
       .createUserWithEmailAndPassword(user.email, user.password)
       .then(success_callback, failed_callback);
   };
-  send = messages => {
-    for (let i = 0; i < messages.length; i++) {
-      const {text, user} = messages[i];
-      const message = {text, user, createdAt: this.timestamp};
-      this.ref.push(message);
-    }
-  };
+
   readUserData() {
     firebase
       .database()

@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {Container} from 'native-base';
 import {StyleSheet} from 'react-native';
-import MapView from 'react-native-maps';
+import MapView, {Polyline, Marker} from 'react-native-maps';
 import Header from '../Components/Header';
-import Polyline from '@mapbox/polyline';
+// import Polyline from '@mapbox/polyline';
 import Geolocation from '@react-native-community/geolocation';
 
 class Maps extends Component {
@@ -37,6 +37,7 @@ class Maps extends Component {
       error => this.setState({error: error.message}),
       {enableHighAccuracy: false, timeout: 200000, maximumAge: 1000},
     );
+    setInterval(this.mergeLot, 5000);
   }
 
   mergeLot() {
@@ -88,7 +89,7 @@ class Maps extends Component {
             longitudeDelta: 1,
           }}>
           {!!this.state.latitude && !!this.state.longitude && (
-            <MapView.Marker
+            <Marker
               coordinate={{
                 latitude: this.state.latitude,
                 longitude: this.state.longitude,
@@ -98,7 +99,7 @@ class Maps extends Component {
           )}
 
           {!!this.state.cordLatitude && !!this.state.cordLongitude && (
-            <MapView.Marker
+            <Marker
               coordinate={{
                 latitude: this.state.cordLatitude,
                 longitude: this.state.cordLongitude,
@@ -110,7 +111,7 @@ class Maps extends Component {
           {!!this.state.latitude &&
             !!this.state.longitude &&
             this.state.x == 'true' && (
-              <MapView.Polyline
+              <Polyline
                 coordinates={this.state.coords}
                 strokeWidth={2}
                 strokeColor="red"
@@ -120,7 +121,7 @@ class Maps extends Component {
           {!!this.state.latitude &&
             !!this.state.longitude &&
             this.state.x == 'error' && (
-              <MapView.Polyline
+              <Polyline
                 coordinates={[
                   {
                     latitude: this.state.latitude,

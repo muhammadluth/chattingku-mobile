@@ -21,7 +21,21 @@ import {
 } from 'native-base';
 
 export default class Profile extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      users: [],
+      avatar: this.props.navigation.getParam('avarar'),
+      username: this.props.navigation.getParam('username'),
+      email: this.props.navigation.getParam('email'),
+      phoneNumber: this.props.navigation.getParam('phoneNumber'),
+    };
+  }
   render() {
+    console.log(this.state.username);
+    let Image_Http_URL = {
+      uri: `https://ui-avatars.com/api/?size=256&rounded=true&name=${this.state.username}`,
+    };
     return (
       <Container>
         <Header style={{backgroundColor: '#7158e2'}}>
@@ -41,10 +55,12 @@ export default class Profile extends Component {
               <Card style={styles.cardView}>
                 <View>
                   <ImageBackground
-                    source={require('../Assets/images/profile.png')}
+                    source={Image_Http_URL}
                     style={{height: 200, width: '100%'}}>
                     <View style={styles.viewOverlay}>
-                      <Text style={styles.textProduct}>Muhammad Luthfi</Text>
+                      <Text style={styles.textProduct}>
+                        {this.state.username}
+                      </Text>
                     </View>
                   </ImageBackground>
                 </View>
@@ -63,17 +79,20 @@ export default class Profile extends Component {
                   <View>
                     <Text
                       onPress={() =>
-                        Linking.openURL('mailto:muhammadluthfi059@gmail.com')
+                        Linking.openURL(`mailto:${this.state.email}`)
                       }>
-                      muhammadluthfi059@gmail.com
+                      {this.state.email}
                     </Text>
                     <Text style={{fontSize: 14}}>Email</Text>
                   </View>
                 </CardItem>
                 <CardItem>
                   <View>
-                    <Text onPress={() => Linking.openURL('tel:+6281392371406')}>
-                      +6281392371406
+                    <Text
+                      onPress={() =>
+                        Linking.openURL(`tel:${this.state.phoneNumber}`)
+                      }>
+                      {this.state.phoneNumber}
                     </Text>
                     <Text style={{fontSize: 14}}>Ponsel</Text>
                   </View>
@@ -81,7 +100,12 @@ export default class Profile extends Component {
                     <Button
                       transparent
                       onPress={() =>
-                        this.props.navigation.navigate('ListChat')
+                        this.props.navigation.navigate('ListChat', {
+                          avatar: this.state.avatar,
+                          username: this.state.username,
+                          email: this.state.email,
+                          phoneNumber: this.state.phoneNumber,
+                        })
                       }>
                       <Icon
                         style={{color: '#000'}}
