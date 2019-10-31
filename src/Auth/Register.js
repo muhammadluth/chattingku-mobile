@@ -17,6 +17,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import PasswordInputText from 'react-native-hide-show-password-input';
 import firebaseSDK from '../Public/Firebase/config/firebaseSDK';
 import firebase from 'firebase';
+import Geolocation from '@react-native-community/geolocation';
 
 export default class Register extends Component {
   constructor(props) {
@@ -27,8 +28,23 @@ export default class Register extends Component {
       phoneNumber: '',
       email: '',
       password: '',
-      // avatar: '',
+      latitude: null,
+      longitude: null,
+      error: null,
     };
+  }
+  componentDidMount() {
+    Geolocation.getCurrentPosition(
+      position => {
+        this.setState({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          error: null,
+        });
+      },
+      error => this.setState({error: error.message}),
+      {enableHighAccuracy: false, timeout: 200000, maximumAge: 1000},
+    );
   }
 
   onPressCreate = async () => {
@@ -57,6 +73,8 @@ export default class Register extends Component {
       phoneNumber: this.state.phoneNumber,
       email: this.state.email,
       password: this.state.password,
+      latitude: this.state.latitude,
+      longitude: this.state.longitude,
     };
 
     var userf = firebase.auth().currentUser;

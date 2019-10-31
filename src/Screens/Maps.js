@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
-import {Container} from 'native-base';
+import {Container, View, Button, Text, Icon} from 'native-base';
 import {StyleSheet} from 'react-native';
 import MapView, {Polyline, Marker} from 'react-native-maps';
+import {TouchableOpacity} from 'react-native';
 import Header from '../Components/Header';
 // import Polyline from '@mapbox/polyline';
+import firebase from 'firebase';
 import Geolocation from '@react-native-community/geolocation';
 
 class Maps extends Component {
@@ -11,6 +13,7 @@ class Maps extends Component {
     super(props);
 
     this.state = {
+      users: [],
       latitude: null,
       longitude: null,
       error: null,
@@ -19,12 +22,32 @@ class Maps extends Component {
       x: 'false',
       cordLatitude: -6.23,
       cordLongitude: 106.75,
+      userON: firebase.auth().currentUser.displayName,
+      userId: '',
     };
 
     this.mergeLot = this.mergeLot.bind(this);
   }
 
   componentDidMount() {
+    firebase
+      .database()
+      .ref('User')
+      .on('value', data => {
+        let arraydata = [];
+        data.forEach(child => {
+          arraydata = [
+            {
+              _id: child.key,
+              latitude: child.val().latitude,
+              longitude: child.val().longitude,
+              username: child.val().username,
+            },
+            ...arraydata,
+          ];
+        });
+        this.setState({users: arraydata});
+      });
     Geolocation.getCurrentPosition(
       position => {
         this.setState({
@@ -53,6 +76,19 @@ class Maps extends Component {
       );
     }
   }
+  TrackingLocation = () => {
+    this.state.users.map(item => {
+      this.setState({userId: item._id});
+    });
+    console.log(this.state.userId);
+    firebase
+      .database()
+      .ref(`User/${this.state.userId}`)
+      .update({
+        latitude: this.state.latitude,
+        longitude: this.state.longitude,
+      });
+  };
 
   async getDirections(startLoc, destinationLoc) {
     try {
@@ -79,7 +115,6 @@ class Maps extends Component {
   render() {
     return (
       <Container>
-        <Header />
         <MapView
           style={styles.map}
           initialRegion={{
@@ -88,55 +123,35 @@ class Maps extends Component {
             latitudeDelta: 1,
             longitudeDelta: 1,
           }}>
-          {!!this.state.latitude && !!this.state.longitude && (
-            <Marker
-              coordinate={{
-                latitude: this.state.latitude,
-                longitude: this.state.longitude,
-              }}
-              title={'Your Location'}
-            />
-          )}
-
-          {!!this.state.cordLatitude && !!this.state.cordLongitude && (
-            <Marker
-              coordinate={{
-                latitude: this.state.cordLatitude,
-                longitude: this.state.cordLongitude,
-              }}
-              title={'Your Destination'}
-            />
-          )}
-
-          {!!this.state.latitude &&
-            !!this.state.longitude &&
-            this.state.x == 'true' && (
-              <Polyline
-                coordinates={this.state.coords}
-                strokeWidth={2}
-                strokeColor="red"
+          {this.state.users.map(item => {
+            return (
+              <Marker
+                coordinate={{
+                  latitude: item.latitude,
+                  longitude: item.longitude,
+                }}
+                title={item.username}
               />
-            )}
-
-          {!!this.state.latitude &&
-            !!this.state.longitude &&
-            this.state.x == 'error' && (
-              <Polyline
-                coordinates={[
-                  {
-                    latitude: this.state.latitude,
-                    longitude: this.state.longitude,
-                  },
-                  {
-                    latitude: this.state.cordLatitude,
-                    longitude: this.state.cordLongitude,
-                  },
-                ]}
-                strokeWidth={2}
-                strokeColor="red"
-              />
-            )}
+            );
+          })}
         </MapView>
+        <View
+          style={{
+            backgroundColor: '#dfe4ea',
+            marginHorizontal: 40,
+            marginTop: 10,
+            borderRadius: 20,
+          }}>
+          <TouchableOpacity
+            onPress={() => this.TrackingLocation()}
+            style={{
+              alignItems: 'center',
+              paddingVertical: 10,
+              borderRadius: 20,
+            }}>
+            <Text>Push Your Location</Text>
+          </TouchableOpacity>
+        </View>
       </Container>
     );
   }

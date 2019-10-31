@@ -17,8 +17,10 @@ import {
   Input,
   View,
 } from 'native-base';
+import Geolocation from '@react-native-community/geolocation';
 import Header from '../Components/Header';
 import firebase from 'firebase';
+import Geocoder from 'react-native-geocoder';
 export default class Contact extends Component {
   constructor(props) {
     super(props);
@@ -43,11 +45,8 @@ export default class Contact extends Component {
         this.setState({users: arraydata});
       });
   }
-  render() {
-    console.log(this.state.users);
-    console.log(this.state.avatar);
-    // let data = JSON.parse(JSON.stringify(item));
 
+  render() {
     return (
       <Container>
         <Header {...this.props} />
