@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
-import {Container, View, Button, Text, Icon} from 'native-base';
+import {Container, View, Text} from 'native-base';
 import {StyleSheet} from 'react-native';
-import MapView, {Polyline, Marker} from 'react-native-maps';
+import MapView, {Polyline, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {TouchableOpacity} from 'react-native';
-import Header from '../Components/Header';
-// import Polyline from '@mapbox/polyline';
 import firebase from 'firebase';
 import Geolocation from '@react-native-community/geolocation';
 
@@ -24,6 +22,7 @@ class Maps extends Component {
       cordLongitude: 106.75,
       userON: firebase.auth().currentUser.displayName,
       userId: '',
+      uidON: firebase.auth().currentUser.uid,
     };
 
     this.mergeLot = this.mergeLot.bind(this);
@@ -79,13 +78,9 @@ class Maps extends Component {
     }
   }
   TrackingLocation = () => {
-    this.state.users.map(item => {
-      this.setState({userId: item._id});
-    });
-    console.log(this.state.userId);
     firebase
       .database()
-      .ref(`User/${this.state.userId}`)
+      .ref(`User/${this.state.uidON}`)
       .update({
         latitude: this.state.latitude,
         longitude: this.state.longitude,
@@ -115,32 +110,40 @@ class Maps extends Component {
     }
   }
   render() {
+    var ZoomIn;
+    var initialRegion = {
+      latitude: -6.270565,
+      longitude: 106.75955,
+      latitudeDelta: 1,
+      longitudeDelta: 1,
+    };
     return (
       <Container>
         <MapView
+          ref={ref => (ZoomIn = ref)}
+          provider={PROVIDER_GOOGLE}
           style={styles.map}
-          initialRegion={{
-            latitude: -6.270565,
-            longitude: 106.75955,
-            latitudeDelta: 1,
-            longitudeDelta: 1,
-          }}>
+          initialRegion={initialRegion}>
           {this.state.users.map(item => {
+            let Image_Http_URL = {
+              uri: `https://ui-avatars.com/api/?size=256&rounded=true&name=${item.username}`,
+            };
             return (
               <Marker
+                description={item.phoneNumber}
                 coordinate={{
                   latitude: item.latitude,
                   longitude: item.longitude,
                 }}
                 title={item.username}
-                onPress={() =>
-                  this.props.navigation.navigate('BioMaps', {
-                    avatar: item.avatar,
-                    username: item.username,
-                    email: item.email,
-                    phoneNumber: item.phoneNumber,
-                  })
-                }
+                onPress={() => {
+                  ZoomIn.fitToCoordinates(
+                    [{latitude: item.latitude, longitude: item.longitude}],
+                    {
+                      animated: true,
+                    },
+                  );
+                }}
               />
             );
           })}

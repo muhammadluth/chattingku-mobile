@@ -19,28 +19,7 @@ import {
   Right,
 } from 'native-base';
 import {Grid, Col, Row} from 'react-native-easy-grid';
-// import ImagePicker from 'react-native-image-picker';
-// import Axios from 'axios';
-// import {REACT_NATIVE_APP_API_BASEURL} from 'react-native-dotenv';
 export default class AddContact extends Component {
-  //   constructor(props) {
-  //     super();
-  //     this.state = {
-  //       data: [],
-  //       name: '',
-  //       description: '',
-  //       image: '',
-  //       category: '',
-  //       price: '',
-  //       qty: '',
-  //       limit: '6',
-  //       page: '1',
-  //       allPage: [],
-  //       visible: false,
-  //       collapsed: false,
-  //       count: 0,
-  //     };
-  //   }
   render() {
     return (
       <Container>
@@ -60,7 +39,6 @@ export default class AddContact extends Component {
             <Text style={styles.text}>ADD CONTACT</Text>
           </View>
           <View>
-            {/* <Form onSubmit={this.handleAddProduct.bind(this)}> */}
             <Form>
               <Grid>
                 <Row>
@@ -72,10 +50,7 @@ export default class AddContact extends Component {
                   </Col>
                   <Col>
                     <Item regular style={styles.itemProduct}>
-                      <Input
-                      // onChangeText={Text => this.setState({name: Text})}
-                      // value={this.state.name}
-                      />
+                      <Input />
                     </Item>
                   </Col>
                 </Row>
@@ -88,10 +63,7 @@ export default class AddContact extends Component {
                   </Col>
                   <Col>
                     <Item regular style={styles.itemProduct}>
-                      <Input
-                      // onChangeText={Text => this.setState({category: Text})}
-                      // value={this.state.category}
-                      />
+                      <Input />
                     </Item>
                   </Col>
                 </Row>
@@ -104,17 +76,13 @@ export default class AddContact extends Component {
                   </Col>
                   <Col>
                     <Item regular style={styles.itemProduct}>
-                      <Input
-                      // onChangeText={Text => this.setState({price: Text})}
-                      // value={this.state.price}
-                      />
+                      <Input />
                     </Item>
                   </Col>
                 </Row>
               </Grid>
               <View style={styles.viewButton}>
                 <Button success style={styles.buttons}>
-                  {/* //   onPress={() => this.handleAddProduct()}> */}
                   <Icon name="ios-paper" />
                   <Text>Save Contact</Text>
                 </Button>

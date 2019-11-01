@@ -12,6 +12,10 @@ import {
   Text,
   Card,
   Badge,
+  View,
+  Input,
+  Icon,
+  Item,
 } from 'native-base';
 import firebase from 'firebase';
 import Header from '../Components/Header';
@@ -21,6 +25,7 @@ export default class Home extends Component {
     this.state = {
       messages: [],
       users: [],
+      currentUser: firebase.auth().currentUser,
     };
   }
 
@@ -30,47 +35,68 @@ export default class Home extends Component {
       .ref('User')
       .on('value', data => {
         let arraydata = [];
-        data.forEach(key => {
-          arraydata.push(key);
+        data.forEach(child => {
+          arraydata = [
+            {
+              _id: child.key,
+              avatar: child.val().avatar,
+              username: child.val().username,
+              email: child.val().email,
+              phoneNumber: child.val().phoneNumber,
+            },
+            ...arraydata,
+          ];
         });
         this.setState({users: arraydata});
       });
   }
   render() {
-    console.log(this.state.users);
     return (
       <Container>
         <Header {...this.props} />
+        <View
+          style={{
+            paddingHorizontal: 20,
+            borderRadius: 20,
+            flexDirection: 'row',
+          }}>
+          <Card style={{borderRadius: 20, width: '100%'}}>
+            <View style={{flexDirection: 'row'}}>
+              <Item style={{width: '100%', paddingHorizontal: 10}}>
+                <Icon name="ios-search" />
+                <Input placeholder="Search" />
+                <Icon name="ios-chatboxes" />
+              </Item>
+            </View>
+          </Card>
+        </View>
         <Content>
           <List>
-            <FlatList
-              data={this.state.users}
-              keyExtractor={item => {
-                let data = JSON.parse(JSON.stringify(item));
-                return data.id;
-              }}
-              renderItem={({item, key}) => {
-                let data = JSON.parse(JSON.stringify(item));
-                let Image_Http_URL = {uri: data.avatar};
+            {this.state.users
+              .filter(item => item._id !== this.state.currentUser.uid)
+              .map(item => {
+                let Image_Http_URL = {
+                  uri: `https://ui-avatars.com/api/?size=256&rounded=true&name=${item.username}`,
+                };
                 return (
                   <Card style={{borderRadius: 20}}>
                     <ListItem
                       avatar
                       onPress={() =>
                         this.props.navigation.navigate('ListChat', {
-                          userID: key,
-                          avatar: data.avatar,
-                          username: data.username,
-                          email: data.email,
-                          phoneNumber: data.phoneNumber,
+                          // userID: i
+                          avatar: item.avatar,
+                          username: item.username,
+                          email: item.email,
+                          phoneNumber: item.phoneNumber,
                         })
                       }>
                       <Left>
                         <Thumbnail source={Image_Http_URL} />
                       </Left>
                       <Body>
-                        <Text>{data.username}</Text>
-                        <Text note>{data.phoneNumber}</Text>
+                        <Text>{item.username}</Text>
+                        <Text note>{item.phoneNumber}</Text>
                       </Body>
                       <Right>
                         <Text note>3:43 pm</Text>
@@ -81,22 +107,10 @@ export default class Home extends Component {
                     </ListItem>
                   </Card>
                 );
-              }}
-            />
+              })}
           </List>
         </Content>
       </Container>
     );
   }
 }
-const styles = StyleSheet.create({
-  content: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-  },
-  Logo: {
-    width: 100,
-    height: 100,
-  },
-});

@@ -12,7 +12,7 @@ import {
   View,
   Title,
 } from 'native-base';
-import {StyleSheet, Image, ActivityIndicator, AsyncStorage} from 'react-native';
+import {StyleSheet, Image, AsyncStorage} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import PasswordInputText from 'react-native-hide-show-password-input';
 import firebaseSDK from '../Public/Firebase/config/firebaseSDK';
@@ -22,7 +22,7 @@ export default class Login extends Component {
     super(props);
     this.state = {
       messages: [],
-      name: '',
+      username: '',
       email: '',
       password: '',
       avatar: '',
@@ -31,10 +31,8 @@ export default class Login extends Component {
 
   onPressLogin = async () => {
     const user = {
-      // name: this.state.name,
       email: this.state.email,
       password: this.state.password,
-      avatar: this.state.avatar,
     };
 
     const response = firebaseSDK.login(
@@ -47,7 +45,7 @@ export default class Login extends Component {
   loginSuccess = () => {
     console.log('login successful, navigate to chat.');
     this.props.navigation.navigate('Index', {
-      // name: this.state.name,
+      username: this.state.username,
       email: this.state.email,
       password: this.state.password,
       avatar: this.state.avatar,

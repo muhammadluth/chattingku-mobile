@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {
-  Container,
   Header,
   Left,
   Body,
@@ -8,10 +7,6 @@ import {
   Button,
   Icon,
   Title,
-  Text,
-  Thumbnail,
-  Row,
-  Col,
   View,
 } from 'native-base';
 import {StyleSheet} from 'react-native';
@@ -27,7 +22,7 @@ export default class Headers extends Component {
           <Body />
 
           <Left>
-            <Button transparent>
+            <Button transparent onPress={() => alert('MORE')}>
               <Icon name="more" />
             </Button>
           </Left>

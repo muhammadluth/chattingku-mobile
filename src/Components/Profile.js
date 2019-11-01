@@ -7,17 +7,13 @@ import {
   Body,
   Right,
   Title,
-  Subtitle,
   Icon,
   Button,
   Content,
   Card,
   CardItem,
-  Thumbnail,
   Text,
   View,
-  ListItem,
-  List,
 } from 'native-base';
 
 export default class Profile extends Component {

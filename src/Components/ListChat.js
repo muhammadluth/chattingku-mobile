@@ -30,7 +30,7 @@ export default class ListCard extends Component {
     };
   };
 
-  OnPressSend = async messages => {
+  OnPressSend = messages => {
     for (let i = 0; i < messages.length; i++) {
       const {text, user} = messages[i];
       const message = {
@@ -38,7 +38,7 @@ export default class ListCard extends Component {
         user,
         createdAt: firebase.database.ServerValue.TIMESTAMP,
       };
-      await firebase
+      firebase
         .database()
         .ref(`Messages/${this.state.userON}/${this.state.username}/`)
         .push(message);

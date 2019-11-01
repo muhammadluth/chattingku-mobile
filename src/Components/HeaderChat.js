@@ -1,19 +1,5 @@
 import React, {Component} from 'react';
-import {
-  Container,
-  Header,
-  Left,
-  Body,
-  Right,
-  Button,
-  Icon,
-  Title,
-  Text,
-  Thumbnail,
-  Row,
-  Col,
-  View,
-} from 'native-base';
+import {Header, Body, Button, Icon, Text, Thumbnail, View} from 'native-base';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 export default class HeaderChat extends Component {
   render() {

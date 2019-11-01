@@ -1,11 +1,6 @@
 import React, {Component} from 'react';
-import {View, Container, Header, Content, Button, Text} from 'native-base';
-import {
-  ImageBackground,
-  AsyncStorage,
-  StyleSheet,
-  Dimensions,
-} from 'react-native';
+import {View, Container} from 'native-base';
+import {ImageBackground, StyleSheet, Dimensions} from 'react-native';
 export default class Splashscreen extends Component {
   constructor(props) {
     super(props);

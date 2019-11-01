@@ -55,7 +55,7 @@ export default class Register extends Component {
       password: this.state.password,
     };
     // await firebaseSDK.register(user);
-    const response = firebaseSDK.register(
+    const response = await firebaseSDK.register(
       user,
       this.registerSuccess,
       this.registerFailed,
@@ -81,8 +81,8 @@ export default class Register extends Component {
     userf.updateProfile({displayName: this.state.username});
     firebase
       .database()
-      .ref('User')
-      .push(user);
+      .ref(`User/${userf.uid}`)
+      .set(user);
     this.props.navigation.navigate('Login');
   };
 

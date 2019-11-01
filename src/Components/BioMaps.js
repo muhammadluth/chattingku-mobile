@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 import {
   Container,
   Content,
-  List,
-  ListItem,
   Text,
   CardItem,
   Card,
@@ -13,11 +11,10 @@ import {
   Left,
   Right,
   Body,
-  Toast,
+  Title,
+  Header,
 } from 'native-base';
-import {Image, Linking, AsyncStorage} from 'react-native';
-import Header from '../Components/Header';
-import firebase from 'firebase';
+import {Image, Linking} from 'react-native';
 export default class BioMaps extends Component {
   constructor(props) {
     super(props);
@@ -36,7 +33,17 @@ export default class BioMaps extends Component {
     };
     return (
       <Container>
-        <Header />
+        <Header style={{backgroundColor: '#7158e2'}}>
+          <Left>
+            <Button transparent onPress={() => this.props.navigation.goBack()}>
+              <Icon name={'arrow-back'} />
+            </Button>
+          </Left>
+          <Body>
+            <Title>PROFILE</Title>
+          </Body>
+          <Right />
+        </Header>
         <Content>
           <View>
             <Card style={{}}>
@@ -87,24 +94,6 @@ export default class BioMaps extends Component {
                     </Text>
                     <Text style={{fontSize: 14}}>Ponsel</Text>
                   </View>
-                </CardItem>
-              </View>
-            </Card>
-            <Card>
-              <View style={{marginHorizontal: -20}}>
-                <CardItem>
-                  <ListItem icon>
-                    <Left>
-                      <Button
-                        style={{backgroundColor: '#007AFF'}}
-                        onPress={() => this.props.navigation.goBack()}>
-                        <Icon type={'Ionicons'} name="ios-log-out" />
-                      </Button>
-                      <View style={{paddingHorizontal: 10}}>
-                        <Text>Kembali ke Maps</Text>
-                      </View>
-                    </Left>
-                  </ListItem>
                 </CardItem>
               </View>
             </Card>

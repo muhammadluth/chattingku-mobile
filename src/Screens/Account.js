@@ -15,23 +15,45 @@ import {
   Body,
   Toast,
 } from 'native-base';
-import {Image, Linking, AsyncStorage} from 'react-native';
+import {
+  Image,
+  Linking,
+  AsyncStorage,
+  ImageBackground,
+  StyleSheet,
+} from 'react-native';
 import Header from '../Components/Header';
 import firebase from 'firebase';
+import ImagePicker from 'react-native-image-picker';
 export default class Account extends Component {
+  constructor(props) {
+    super();
+    this.state = {
+      image: '',
+    };
+  }
   logOut = async () => {
     await firebase.auth().signOut();
     this.props.navigation.navigate('Login');
   };
+  handleChoosePhoto = () => {
+    const options = {
+      noData: true,
+    };
+    ImagePicker.launchImageLibrary(options, response => {
+      if (response.uri) {
+        this.setState({image: response.fileName});
+      }
+    });
+  };
 
   render() {
     var user = firebase.auth().currentUser;
-    var username, phoneNumber, email;
+    var username, email, phoneNumber;
 
     if (user != null) {
       username = user.displayName;
       email = user.email;
-      // phoneNumber = user.;
     }
     let Image_Http_URL = {
       uri: `https://ui-avatars.com/api/?size=256&rounded=true&name=${username}`,
@@ -41,24 +63,28 @@ export default class Account extends Component {
         <Header />
         <Content>
           <View>
-            <Card style={{}}>
-              <View style={{alignItems: 'center'}}>
-                <Image
-                  style={{width: 120, height: 120, marginTop: 20}}
-                  source={Image_Http_URL}
-                />
-              </View>
-              <View style={{alignItems: 'center'}}>
-                <Text
-                  style={{
-                    fontSize: 18,
-                    fontWeight: 'bold',
-                    paddingVertical: 20,
-                  }}>
-                  {username}
-                </Text>
-              </View>
+            <Card style={{borderRadius: 10}}>
+              <ImageBackground
+                source={require('../Assets/images/backgroud.png')}
+                style={{height: 180, width: '100%'}}>
+                <View style={styles.viewOverlay}>
+                  <Image
+                    style={{width: 120, height: 120, marginTop: 20}}
+                    source={Image_Http_URL}
+                  />
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      fontWeight: 'bold',
+                      paddingVertical: 20,
+                      color: '#fff',
+                    }}>
+                    {username}
+                  </Text>
+                </View>
+              </ImageBackground>
             </Card>
+
             <Card>
               <View>
                 <CardItem>
@@ -96,6 +122,24 @@ export default class Account extends Component {
                   <ListItem icon>
                     <Left>
                       <Button
+                        style={{backgroundColor: '#f0932b'}}
+                        onPress={this.handleChoosePhoto}>
+                        <Icon type={'Ionicons'} name="ios-cloud-upload" />
+                      </Button>
+                      <View style={{paddingHorizontal: 10}}>
+                        <Text>Update Profile</Text>
+                      </View>
+                    </Left>
+                  </ListItem>
+                </CardItem>
+              </View>
+            </Card>
+            <Card>
+              <View style={{marginHorizontal: -20}}>
+                <CardItem>
+                  <ListItem icon>
+                    <Left>
+                      <Button
                         style={{backgroundColor: '#007AFF'}}
                         onPress={this.logOut}>
                         <Icon type={'Ionicons'} name="ios-log-out" />
@@ -114,3 +158,19 @@ export default class Account extends Component {
     );
   }
 }
+const styles = StyleSheet.create({
+  cardView: {
+    borderColor: '#000',
+    borderRadius: 10,
+    overflow: 'hidden',
+    elevation: 5,
+  },
+  viewOverlay: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    alignItems: 'center',
+  },
+});
