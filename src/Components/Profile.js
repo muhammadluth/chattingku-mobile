@@ -83,15 +83,10 @@ export default class Profile extends Component {
                 </CardItem>
                 <CardItem>
                   <View>
-                    <Text
-                      onPress={() =>
-                        Linking.openURL(`tel:${this.state.phoneNumber}`)
-                      }>
-                      {this.state.phoneNumber}
-                    </Text>
+                    <Text>{this.state.phoneNumber}</Text>
                     <Text style={{fontSize: 14}}>Ponsel</Text>
                   </View>
-                  <View style={{paddingHorizontal: 150}}>
+                  <View style={{position: 'absolute', right: 0}}>
                     <Button
                       transparent
                       onPress={() =>
@@ -103,9 +98,22 @@ export default class Profile extends Component {
                         })
                       }>
                       <Icon
-                        style={{color: '#000'}}
+                        style={{color: '#7158e2', fontSize: 30}}
                         type="Ionicons"
                         name={'ios-chatboxes'}
+                      />
+                    </Button>
+                  </View>
+                  <View style={{position: 'absolute', right: 50}}>
+                    <Button
+                      transparent
+                      onPress={() =>
+                        Linking.openURL(`tel:${this.state.phoneNumber}`)
+                      }>
+                      <Icon
+                        style={{color: '#7158e2', fontSize: 30}}
+                        type="Ionicons"
+                        name={'ios-call'}
                       />
                     </Button>
                   </View>

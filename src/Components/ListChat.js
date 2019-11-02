@@ -75,7 +75,7 @@ export default class ListCard extends Component {
   render() {
     console.log(this.state.userON);
     return (
-      <Container>
+      <Container style={{backgroundColor: '#485460'}}>
         <Header
           {...this.props}
           username={this.state.username}

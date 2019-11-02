@@ -1,22 +1,33 @@
 import firebase from 'firebase';
+import {
+  BASE_API,
+  BASE_AUTH_DOMAIN,
+  BASE_DATABASE_URL,
+  BASE_PROJECT_ID,
+  BASE_STORAGE_BUCKET,
+  BASE_MESSAGING_SENDER_ID,
+  BASE_APP_ID,
+  BASE_MEASUREMENTID,
+} from 'react-native-dotenv';
 
 class FirebaseSDK {
   constructor() {
     if (!firebase.apps.length) {
-      //avoid re-initializing
+      // avoid re-initializing
       firebase.initializeApp({
-        apiKey: 'AIzaSyBIFr7-ds1SUplewGtYTo0nAwjI3Or7ZK4',
-        authDomain: 'chattingku-4d0d7.firebaseapp.com',
-        databaseURL: 'https://chattingku-4d0d7.firebaseio.com',
-        projectId: 'chattingku-4d0d7',
-        storageBucket: 'chattingku-4d0d7.appspot.com',
-        messagingSenderId: '466425941889',
-        appId: '1:466425941889:web:eb37977a5babaf973b2280',
-        measurementId: 'G-E52X07M4ME',
+        apiKey: BASE_API,
+        authDomain: BASE_AUTH_DOMAIN,
+        databaseURL: BASE_DATABASE_URL,
+        projectId: BASE_PROJECT_ID,
+        storageBucket: BASE_STORAGE_BUCKET,
+        messagingSenderId: BASE_MESSAGING_SENDER_ID,
+        appId: BASE_APP_ID,
+        measurementId: BASE_MEASUREMENTID,
       });
     }
   }
   login = async (user, success_callback, failed_callback) => {
+    console.log(BASE_API);
     await firebase
       .auth()
       .signInWithEmailAndPassword(user.email, user.password)

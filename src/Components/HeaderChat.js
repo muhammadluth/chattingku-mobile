@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import {Header, Body, Button, Icon, Text, Thumbnail, View} from 'native-base';
 import {StyleSheet, TouchableOpacity} from 'react-native';
+import firebase from 'firebase';
 export default class HeaderChat extends Component {
   render() {
+    var userON = firebase.auth().currentUser.displayName;
     var username = this.props.username;
     var email = this.props.email;
     var avatar = this.props.avatar;
@@ -43,7 +45,15 @@ export default class HeaderChat extends Component {
             </View>
           </Body>
 
-          <Button transparent>
+          <Button
+            transparent
+            onPress={() =>
+              alert(`INI PERCAKAPAN:
+
+              ${userON}
+                    dengan
+              ${username}`)
+            }>
             <Icon name="more" />
           </Button>
         </Header>

@@ -26,6 +26,7 @@ export default class Home extends Component {
       messages: [],
       users: [],
       currentUser: firebase.auth().currentUser,
+      search: '',
     };
   }
 
@@ -50,9 +51,14 @@ export default class Home extends Component {
         this.setState({users: arraydata});
       });
   }
+
+  getSearch = async () => {
+    let search = this.state.search;
+    await this.setState({search});
+  };
   render() {
     return (
-      <Container>
+      <Container style={{backgroundColor: '#d2dae2'}}>
         <Header {...this.props} />
         <View
           style={{
@@ -64,13 +70,17 @@ export default class Home extends Component {
             <View style={{flexDirection: 'row'}}>
               <Item style={{width: '100%', paddingHorizontal: 10}}>
                 <Icon name="ios-search" />
-                <Input placeholder="Search" />
-                <Icon name="ios-chatboxes" />
+                <Input
+                  placeholder="Search"
+                  onChangeText={Text => this.setState({search: Text})}
+                  value={this.state.search}
+                />
+                <Icon name="ios-chatboxes" onPress={() => this.getSearch()} />
               </Item>
             </View>
           </Card>
         </View>
-        <Content>
+        <Content style={{backgroundColor: '#d2dae2'}}>
           <List>
             {this.state.users
               .filter(item => item._id !== this.state.currentUser.uid)
@@ -92,17 +102,19 @@ export default class Home extends Component {
                         })
                       }>
                       <Left>
-                        <Thumbnail source={Image_Http_URL} />
+                        <Thumbnail
+                          style={{marginVertical: -8}}
+                          source={Image_Http_URL}
+                        />
                       </Left>
                       <Body>
                         <Text>{item.username}</Text>
                         <Text note>{item.phoneNumber}</Text>
                       </Body>
                       <Right>
-                        <Text note>3:43 pm</Text>
-                        <Badge success style={{marginVertical: 5}}>
-                          <Text>2</Text>
-                        </Badge>
+                        <Text note style={{paddingVertical: 10}}>
+                          3:43 pm
+                        </Text>
                       </Right>
                     </ListItem>
                   </Card>

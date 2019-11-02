@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {StyleSheet, ImageBackground} from 'react-native';
 import {
   Container,
   Content,
@@ -55,55 +54,8 @@ export default class Contact extends Component {
 
   render() {
     return (
-      <Container>
+      <Container style={{backgroundColor: '#d2dae2'}}>
         <Header {...this.props} />
-        <List>
-          {this.state.users
-            .filter(item => item._id === this.state.currentUser.uid)
-            .map(item => {
-              let Image_Http_URL = {
-                uri: `https://ui-avatars.com/api/?size=256&rounded=true&name=${item.username}`,
-              };
-              return (
-                <Card style={styles.cardView}>
-                  <ImageBackground
-                    source={require('../Assets/images/backgroud.png')}
-                    style={{height: 150, width: '100%'}}>
-                    <View style={styles.viewOverlay}>
-                      <ListItem thumbnail>
-                        <View style={{flexDirection: 'row'}}>
-                          <View style={{alignItems: 'center'}}>
-                            <Thumbnail
-                              style={{
-                                height: 100,
-                                width: 100,
-                              }}
-                              source={Image_Http_URL}
-                            />
-                          </View>
-                          <View
-                            style={{
-                              paddingHorizontal: 20,
-                              paddingVertical: 20,
-                            }}>
-                            <Text style={{color: '#fff'}}>
-                              Name: {item.username}
-                            </Text>
-                            <Text style={{color: '#fff'}}>
-                              Phone: {item.phoneNumber}
-                            </Text>
-                            <Text style={{color: '#fff'}}>
-                              Email: {item.email}
-                            </Text>
-                          </View>
-                        </View>
-                      </ListItem>
-                    </View>
-                  </ImageBackground>
-                </Card>
-              );
-            })}
-        </List>
         <View
           style={{
             paddingHorizontal: 20,
@@ -184,18 +136,3 @@ export default class Contact extends Component {
     );
   }
 }
-const styles = StyleSheet.create({
-  cardView: {
-    borderColor: '#000',
-    borderRadius: 20,
-    overflow: 'hidden',
-    elevation: 5,
-  },
-  viewOverlay: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-  },
-});

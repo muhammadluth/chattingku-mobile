@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {
   Container,
   Content,
-  List,
   ListItem,
   Text,
   CardItem,
@@ -11,17 +10,8 @@ import {
   Button,
   Icon,
   Left,
-  Right,
-  Body,
-  Toast,
 } from 'native-base';
-import {
-  Image,
-  Linking,
-  AsyncStorage,
-  ImageBackground,
-  StyleSheet,
-} from 'react-native';
+import {Image, Linking, ImageBackground, StyleSheet} from 'react-native';
 import Header from '../Components/Header';
 import firebase from 'firebase';
 import ImagePicker from 'react-native-image-picker';
@@ -59,7 +49,7 @@ export default class Account extends Component {
       uri: `https://ui-avatars.com/api/?size=256&rounded=true&name=${username}`,
     };
     return (
-      <Container>
+      <Container style={{backgroundColor: '#d2dae2'}}>
         <Header />
         <Content>
           <View>
