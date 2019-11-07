@@ -8,6 +8,7 @@ export default class HeaderChat extends Component {
     var username = this.props.username;
     var email = this.props.email;
     var avatar = this.props.avatar;
+    var status = this.props.status;
     var phoneNumber = this.props.phoneNumber;
     let Image_Http_URL = {
       uri: `https://ui-avatars.com/api/?size=256&rounded=true&name=${username}`,
@@ -31,6 +32,7 @@ export default class HeaderChat extends Component {
                     email: email,
                     avatar: avatar,
                     phoneNumber: phoneNumber,
+                    status: status,
                   })
                 }>
                 <Thumbnail

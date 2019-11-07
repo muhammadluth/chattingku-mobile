@@ -30,63 +30,21 @@ export default class AddContact extends Component {
             </Button>
           </Left>
           <Body>
-            <Title>ADD CONTACT</Title>
+            <Title>Add Contact</Title>
           </Body>
           <Right />
         </Header>
         <Content>
           <View>
-            <Text style={styles.text}>ADD CONTACT</Text>
+            <Text style={styles.text}>Search Contact</Text>
           </View>
-          <View>
+          <View style={{paddingHorizontal: 30}}>
             <Form>
-              <Grid>
-                <Row>
-                  <Col style={styles.col}>
-                    <Label>Name</Label>
-                  </Col>
-                  <Col style={{width: 5, marginTop: 12}}>
-                    <Label>:</Label>
-                  </Col>
-                  <Col>
-                    <Item regular style={styles.itemProduct}>
-                      <Input />
-                    </Item>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col style={styles.col}>
-                    <Label>Email</Label>
-                  </Col>
-                  <Col style={{width: 5, marginTop: 12}}>
-                    <Label>:</Label>
-                  </Col>
-                  <Col>
-                    <Item regular style={styles.itemProduct}>
-                      <Input />
-                    </Item>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col style={styles.col}>
-                    <Label>No.Telepone</Label>
-                  </Col>
-                  <Col style={{width: 5, marginTop: 12}}>
-                    <Label>:</Label>
-                  </Col>
-                  <Col>
-                    <Item regular style={styles.itemProduct}>
-                      <Input />
-                    </Item>
-                  </Col>
-                </Row>
-              </Grid>
-              <View style={styles.viewButton}>
-                <Button success style={styles.buttons}>
-                  <Icon name="ios-paper" />
-                  <Text>Save Contact</Text>
-                </Button>
-              </View>
+              <Item regular style={styles.itemProduct}>
+                <Icon name="ios-search" />
+                <Input placeholder="Please Input Email Your Friend" />
+                <Icon name="ios-person" />
+              </Item>
             </Form>
           </View>
         </Content>
@@ -96,11 +54,6 @@ export default class AddContact extends Component {
 }
 
 const styles = StyleSheet.create({
-  col: {
-    marginTop: 12,
-    width: 100,
-    marginLeft: 10,
-  },
   title: {
     fontSize: 24,
     margin: 18,
@@ -116,11 +69,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textDecorationLine: 'underline',
   },
-  buttons: {
-    margin: 20,
-    position: 'relative',
-    borderRadius: 10,
-  },
   viewButton: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -129,8 +77,7 @@ const styles = StyleSheet.create({
   },
   itemProduct: {
     borderColor: '#bdc3c7',
-    marginBottom: 5,
-    marginRight: 5,
+    borderRadius: 20,
   },
   icons: {
     margin: 20,

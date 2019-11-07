@@ -14,7 +14,7 @@ import Account from './Screens/Account';
 import ListChat from './Components/ListChat';
 import Profile from './Components/Profile';
 import AddContact from './Components/AddContact';
-import BioMaps from './Components/BioMaps';
+import EditProfile from './Components/EditProfile';
 
 const MainNavigator = createStackNavigator(
   {
@@ -24,7 +24,7 @@ const MainNavigator = createStackNavigator(
     ListChat: {screen: ListChat},
     Profile: {screen: Profile},
     AddContact: {screen: AddContact},
-    BioMaps: {screen: BioMaps},
+    EditProfile: {screen: EditProfile},
 
     Index: createMaterialBottomTabNavigator({
       Home: {
@@ -42,7 +42,7 @@ const MainNavigator = createStackNavigator(
           ),
           activeColor: '#f0edf6',
           inactiveColor: '#226557',
-          barStyle: {backgroundColor: '#3BAD87'},
+          barStyle: {backgroundColor: '#7158e2'},
         },
       },
       Contact: {
@@ -74,7 +74,7 @@ const MainNavigator = createStackNavigator(
           ),
           activeColor: '#f0edf6',
           inactiveColor: '#226557',
-          barStyle: {backgroundColor: '#67baf6'},
+          barStyle: {backgroundColor: '#7158e2'},
         },
       },
       Account: {
@@ -92,7 +92,7 @@ const MainNavigator = createStackNavigator(
           ),
           activeColor: '#f0edf6',
           inactiveColor: '#226557',
-          barStyle: {backgroundColor: '#ff7675'},
+          barStyle: {backgroundColor: '#7158e2'},
         },
       },
     }),

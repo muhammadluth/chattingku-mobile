@@ -9,10 +9,13 @@ export default class ListCard extends Component {
     this.state = {
       Messages: [],
       TextMessages: [],
-      avatar: this.props.navigation.getParam('avarar'),
+      userID: this.props.navigation.getParam('userID'),
+      avatar: this.props.navigation.getParam('avatar'),
       username: this.props.navigation.getParam('username'),
       email: this.props.navigation.getParam('email'),
       phoneNumber: this.props.navigation.getParam('phoneNumber'),
+      status: this.props.navigation.getParam('status'),
+      uidON: firebase.auth().currentUser.uid,
       userON: firebase.auth().currentUser.displayName,
       emailON: firebase.auth().currentUser.email,
       avatarON: firebase.auth().currentUser.photoURL,
@@ -40,18 +43,18 @@ export default class ListCard extends Component {
       };
       firebase
         .database()
-        .ref(`Messages/${this.state.userON}/${this.state.username}/`)
+        .ref(`Messages/${this.state.uidON}/${this.state.userID}/`)
         .push(message);
       firebase
         .database()
-        .ref(`Messages/${this.state.username}/${this.state.userON}/`)
+        .ref(`Messages/${this.state.userID}/${this.state.uidON}/`)
         .push(message);
     }
   };
   componentDidMount() {
     firebase
       .database()
-      .ref(`Messages/${this.state.username}/${this.state.userON}/`)
+      .ref(`Messages/${this.state.userID}/${this.state.uidON}/`)
       .on('value', data => {
         var message = [];
         data.forEach(child => {
@@ -73,7 +76,7 @@ export default class ListCard extends Component {
   }
 
   render() {
-    console.log(this.state.userON);
+    console.log(this.state.userID);
     return (
       <Container style={{backgroundColor: '#485460'}}>
         <Header
@@ -82,6 +85,7 @@ export default class ListCard extends Component {
           email={this.state.email}
           avatar={this.state.avatar}
           phoneNumber={this.state.phoneNumber}
+          status={this.state.status}
         />
 
         <GiftedChat

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Container, View, Text} from 'native-base';
+import {Container, View, Text, Picker, Icon} from 'native-base';
 import {StyleSheet} from 'react-native';
 import MapView, {Polyline, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {TouchableOpacity} from 'react-native';
@@ -61,7 +61,6 @@ class Maps extends Component {
       error => this.setState({error: error.message}),
       {enableHighAccuracy: false, timeout: 200000, maximumAge: 1000},
     );
-    setInterval(this.mergeLot, 5000);
   }
 
   mergeLot() {
@@ -72,7 +71,11 @@ class Maps extends Component {
           concat: concatLot,
         },
         () => {
-          this.getDirections(concatLot, '-6.270565,106.759550');
+          this.getDirections(
+            concatLot,
+            this.state.latitude,
+            this.state.longitude,
+          );
         },
       );
     }
@@ -111,24 +114,22 @@ class Maps extends Component {
   }
   render() {
     var ZoomIn;
-    var initialRegion = {
-      latitude: -6.270565,
-      longitude: 106.75955,
-      latitudeDelta: 1,
-      longitudeDelta: 1,
-    };
+    console.log(this.state.coords);
+    console.log(this.state.longitude);
     return (
       <Container>
         <MapView
           ref={ref => (ZoomIn = ref)}
           provider={PROVIDER_GOOGLE}
           style={styles.map}
-          initialRegion={initialRegion}>
+          initialRegion={{
+            latitude: this.state.latitude || -6.17476,
+            longitude: this.state.longitude || 106.827072,
+            latitudeDelta: 1,
+            longitudeDelta: 1,
+          }}>
           {this.state.users.map(item => {
-            let Image_Http_URL = {
-              uri: `https://ui-avatars.com/api/?size=256&rounded=true&name=${item.username}`,
-            };
-            return (
+            return item.latitude && item.longitude !== null ? (
               <Marker
                 description={item.phoneNumber}
                 coordinate={{
@@ -145,13 +146,22 @@ class Maps extends Component {
                   );
                 }}
               />
+            ) : (
+              <Marker
+                description={item.phoneNumber}
+                coordinate={{
+                  latitude: -6.17476,
+                  longitude: 106.827072,
+                }}
+                title={item.username}
+              />
             );
           })}
         </MapView>
         <View
           style={{
             backgroundColor: '#dfe4ea',
-            marginHorizontal: 40,
+            marginHorizontal: 50,
             marginTop: 10,
             borderRadius: 20,
           }}>
@@ -162,8 +172,42 @@ class Maps extends Component {
               paddingVertical: 10,
               borderRadius: 20,
             }}>
-            <Text>Push Your Location</Text>
+            <Text>Push Your Locations</Text>
           </TouchableOpacity>
+          {this.state.users
+            .filter(item => item._id !== firebase.auth().currentUser.uid)
+            .map(item => {
+              return (
+                <TouchableOpacity
+                  onPress={() => {
+                    ZoomIn.fitToCoordinates(
+                      [
+                        {
+                          latitude: item.latitude,
+                          longitude: item.longitude,
+                        },
+                      ],
+                      {
+                        animated: true,
+                      },
+                    );
+                  }}
+                  style={{
+                    alignItems: 'center',
+                    paddingVertical: 10,
+                    borderRadius: 20,
+                  }}>
+                  <View style={{flexDirection: 'row'}}>
+                    <Icon
+                      type="Ionicons"
+                      name="ios-contact"
+                      style={{paddingHorizontal: 5}}
+                    />
+                    <Text style={{paddingVertical: 5}}>{item.username}</Text>
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
         </View>
       </Container>
     );

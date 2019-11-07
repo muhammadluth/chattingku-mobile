@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {StyleSheet, FlatList} from 'react-native';
 import {
   Container,
   Content,
@@ -11,7 +10,6 @@ import {
   Thumbnail,
   Text,
   Card,
-  Badge,
   View,
   Input,
   Icon,
@@ -44,6 +42,7 @@ export default class Home extends Component {
               username: child.val().username,
               email: child.val().email,
               phoneNumber: child.val().phoneNumber,
+              status: child.val().status,
             },
             ...arraydata,
           ];
@@ -89,16 +88,17 @@ export default class Home extends Component {
                   uri: `https://ui-avatars.com/api/?size=256&rounded=true&name=${item.username}`,
                 };
                 return (
-                  <Card style={{borderRadius: 20}}>
+                  <Card style={{borderRadius: 20, paddingVertical: 1}}>
                     <ListItem
                       avatar
                       onPress={() =>
                         this.props.navigation.navigate('ListChat', {
-                          // userID: i
+                          userID: item._id,
                           avatar: item.avatar,
                           username: item.username,
                           email: item.email,
                           phoneNumber: item.phoneNumber,
+                          status: item.status,
                         })
                       }>
                       <Left>

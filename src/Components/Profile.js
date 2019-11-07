@@ -21,16 +21,19 @@ export default class Profile extends Component {
     super(props);
     this.state = {
       users: [],
+      userID: this.props.navigation.getParam('userID'),
       avatar: this.props.navigation.getParam('avatar'),
       username: this.props.navigation.getParam('username'),
       email: this.props.navigation.getParam('email'),
       phoneNumber: this.props.navigation.getParam('phoneNumber'),
+      status: this.props.navigation.getParam('status'),
     };
   }
   render() {
     let Image_Http_URL = {
       uri: `https://ui-avatars.com/api/?size=256&rounded=true&name=${this.state.username}`,
     };
+    console.log(this.state.userID);
     return (
       <Container>
         <Header style={{backgroundColor: '#7158e2'}}>
@@ -68,7 +71,7 @@ export default class Profile extends Component {
                 </CardItem>
 
                 <CardItem>
-                  <Text>Di Kantor</Text>
+                  <Text>{this.state.status}</Text>
                 </CardItem>
                 <CardItem>
                   <View>
@@ -91,10 +94,12 @@ export default class Profile extends Component {
                       transparent
                       onPress={() =>
                         this.props.navigation.navigate('ListChat', {
+                          userID: this.state.userID,
                           avatar: this.state.avatar,
                           username: this.state.username,
                           email: this.state.email,
                           phoneNumber: this.state.phoneNumber,
+                          status: this.state.status,
                         })
                       }>
                       <Icon

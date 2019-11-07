@@ -50,7 +50,7 @@ export default class Login extends Component {
       password: this.state.password,
       avatar: this.state.avatar,
     });
-    AsyncStorage.setItem('email', this.state.email);
+    AsyncStorage.setItem('isLogined', firebase.auth().currentUser.uid);
   };
 
   loginFailed = () => {

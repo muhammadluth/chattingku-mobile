@@ -28,6 +28,7 @@ export default class Register extends Component {
       phoneNumber: '',
       email: '',
       password: '',
+      status: 'Ada',
       latitude: null,
       longitude: null,
       error: null,
@@ -72,7 +73,7 @@ export default class Register extends Component {
       username: this.state.username,
       phoneNumber: this.state.phoneNumber,
       email: this.state.email,
-      password: this.state.password,
+      status: this.state.status,
       latitude: this.state.latitude,
       longitude: this.state.longitude,
     };

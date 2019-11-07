@@ -22,10 +22,6 @@ export default class Contact extends Component {
     super(props);
     this.state = {
       users: [],
-      avatar: '',
-      username: '',
-      email: '',
-      phoneNumber: '',
       currentUser: firebase.auth().currentUser,
     };
   }
@@ -44,6 +40,7 @@ export default class Contact extends Component {
               username: child.val().username,
               email: child.val().email,
               phoneNumber: child.val().phoneNumber,
+              status: child.val().status,
             },
             ...arraydata,
           ];
@@ -101,6 +98,7 @@ export default class Contact extends Component {
                 let Image_Http_URL = {
                   uri: `https://ui-avatars.com/api/?size=256&rounded=true&name=${item.username}`,
                 };
+                console.log(item.status);
                 return (
                   <Card style={{borderRadius: 10}}>
                     <ListItem
@@ -112,6 +110,7 @@ export default class Contact extends Component {
                           username: item.username,
                           email: item.email,
                           phoneNumber: item.phoneNumber,
+                          status: item.status,
                         })
                       }>
                       <Left>
@@ -123,7 +122,7 @@ export default class Contact extends Component {
                       <Body>
                         <View style={{paddingTop: 5}}>
                           <Text>{item.username}</Text>
-                          <Text note>Di Kantor</Text>
+                          <Text note>{item.status}</Text>
                         </View>
                       </Body>
                     </ListItem>
