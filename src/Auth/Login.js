@@ -12,10 +12,11 @@ import {
   View,
   Title,
 } from 'native-base';
-import {StyleSheet, Image, AsyncStorage} from 'react-native';
+import {StyleSheet, Image, AsyncStorage, ToastAndroid} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import PasswordInputText from 'react-native-hide-show-password-input';
 import firebaseSDK from '../Public/Firebase/config/firebaseSDK';
+import firebase from 'firebase';
 
 export default class Login extends Component {
   constructor(props) {
@@ -44,6 +45,7 @@ export default class Login extends Component {
 
   loginSuccess = () => {
     console.log('login successful, navigate to chat.');
+    ToastAndroid.show('Login Success', ToastAndroid.TOP, ToastAndroid.SHORT);
     this.props.navigation.navigate('Index', {
       username: this.state.username,
       email: this.state.email,

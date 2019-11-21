@@ -57,6 +57,7 @@ export default class Account extends Component {
 
   logOut = async () => {
     await firebase.auth().signOut();
+    await AsyncStorage.removeItem('isLogined');
     this.props.navigation.navigate('Login');
   };
 

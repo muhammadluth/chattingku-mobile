@@ -12,7 +12,7 @@ import {
   View,
   Title,
 } from 'native-base';
-import {StyleSheet, Image} from 'react-native';
+import {StyleSheet, Image, ToastAndroid} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import PasswordInputText from 'react-native-hide-show-password-input';
 import firebaseSDK from '../Public/Firebase/config/firebaseSDK';
@@ -84,6 +84,11 @@ export default class Register extends Component {
       .database()
       .ref(`User/${userf.uid}`)
       .set(user);
+    ToastAndroid.show(
+      'Registration Success',
+      ToastAndroid.TOP,
+      ToastAndroid.SHORT,
+    );
     this.props.navigation.navigate('Login');
   };
 

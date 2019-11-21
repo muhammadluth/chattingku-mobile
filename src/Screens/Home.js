@@ -10,10 +10,7 @@ import {
   Thumbnail,
   Text,
   Card,
-  View,
-  Input,
-  Icon,
-  Item,
+  Spinner,
 } from 'native-base';
 import firebase from 'firebase';
 import Header from '../Components/Header';
@@ -23,8 +20,8 @@ export default class Home extends Component {
     this.state = {
       messages: [],
       users: [],
-      currentUser: firebase.auth().currentUser,
       search: '',
+      loading: true,
     };
   }
 
@@ -47,7 +44,7 @@ export default class Home extends Component {
             ...arraydata,
           ];
         });
-        this.setState({users: arraydata});
+        this.setState({users: arraydata, loading: false});
       });
   }
 
@@ -57,70 +54,54 @@ export default class Home extends Component {
   };
   render() {
     return (
-      <Container style={{backgroundColor: '#d2dae2'}}>
+      <Container style={{backgroundColor: '#fff'}}>
         <Header {...this.props} />
-        <View
-          style={{
-            paddingHorizontal: 20,
-            borderRadius: 20,
-            flexDirection: 'row',
-          }}>
-          <Card style={{borderRadius: 20, width: '100%'}}>
-            <View style={{flexDirection: 'row'}}>
-              <Item style={{width: '100%', paddingHorizontal: 10}}>
-                <Icon name="ios-search" />
-                <Input
-                  placeholder="Search"
-                  onChangeText={Text => this.setState({search: Text})}
-                  value={this.state.search}
-                />
-                <Icon name="ios-chatboxes" onPress={() => this.getSearch()} />
-              </Item>
-            </View>
-          </Card>
-        </View>
-        <Content style={{backgroundColor: '#d2dae2'}}>
-          <List>
-            {this.state.users
-              .filter(item => item._id !== this.state.currentUser.uid)
-              .map(item => {
-                let Image_Http_URL = {
-                  uri: `https://ui-avatars.com/api/?size=256&rounded=true&name=${item.username}`,
-                };
-                return (
-                  <Card style={{borderRadius: 20, paddingVertical: 1}}>
-                    <ListItem
-                      avatar
-                      onPress={() =>
-                        this.props.navigation.navigate('ListChat', {
-                          userID: item._id,
-                          avatar: item.avatar,
-                          username: item.username,
-                          email: item.email,
-                          phoneNumber: item.phoneNumber,
-                          status: item.status,
-                        })
-                      }>
-                      <Left>
-                        <Thumbnail
-                          style={{marginVertical: -8}}
-                          source={Image_Http_URL}
-                        />
-                      </Left>
-                      <Body>
-                        <Text>{item.username}</Text>
-                        <Text note>{item.phoneNumber}</Text>
-                      </Body>
-                      <Right>
-                        <Text note style={{paddingVertical: 10}}>
-                          3:43 pm
-                        </Text>
-                      </Right>
-                    </ListItem>
-                  </Card>
-                );
-              })}
-          </List>
+        <Content style={{backgroundColor: '#fff'}}>
+          {this.state.loading ? (
+            <Spinner color="#7d5fff" />
+          ) : (
+            <List style={{margin: 15}}>
+              {this.state.users
+                .filter(item => item._id !== firebase.auth().currentUser.uid)
+                .map(item => {
+                  let Image_Http_URL = {
+                    uri: `https://ui-avatars.com/api/?size=256&rounded=true&name=${item.username}`,
+                  };
+                  return (
+                    <Card style={{borderRadius: 10, paddingVertical: 4}}>
+                      <ListItem
+                        avatar
+                        onPress={() =>
+                          this.props.navigation.navigate('ListChat', {
+                            userID: item._id,
+                            avatar: item.avatar,
+                            username: item.username,
+                            email: item.email,
+                            phoneNumber: item.phoneNumber,
+                            status: item.status,
+                          })
+                        }>
+                        <Left>
+                          <Thumbnail
+                            style={{marginVertical: -8}}
+                            source={Image_Http_URL}
+                          />
+                        </Left>
+                        <Body>
+                          <Text>{item.username}</Text>
+                          <Text note>{item.phoneNumber}</Text>
+                        </Body>
+                        <Right>
+                          <Text note style={{paddingVertical: 10}}>
+                            3:43 pm
+                          </Text>
+                        </Right>
+                      </ListItem>
+                    </Card>
+                  );
+                })}
+            </List>
+          )}
         </Content>
       </Container>
     );

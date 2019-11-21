@@ -22,7 +22,8 @@ export default class Contact extends Component {
     super(props);
     this.state = {
       users: [],
-      currentUser: firebase.auth().currentUser,
+      contact: [],
+      search: '',
     };
   }
 
@@ -50,37 +51,37 @@ export default class Contact extends Component {
   }
 
   render() {
+    console.log(this.props.navigation.getParam('username'));
     return (
-      <Container style={{backgroundColor: '#d2dae2'}}>
+      <Container style={{backgroundColor: '#fff'}}>
         <Header {...this.props} />
         <View
           style={{
-            paddingHorizontal: 20,
+            paddingHorizontal: 10,
             borderRadius: 20,
             flexDirection: 'row',
+            marginVertical: 10,
           }}>
-          <Card style={{borderRadius: 20, width: '75%'}}>
+          <Card style={{borderRadius: 10, width: '85%'}}>
             <View style={{flexDirection: 'row'}}>
               <Item style={{width: '100%', paddingHorizontal: 10}}>
                 <Icon name="ios-search" />
-                <Input placeholder="Search" />
-                <Icon name="ios-people" />
+                <Input
+                  placeholder="Search"
+                  onChangeText={Text => this.setState({search: Text})}
+                  autoCapitalize="none"
+                  value={this.state.search}
+                />
               </Item>
             </View>
           </Card>
-          <View style={{paddingVertical: 8, paddingHorizontal: 30}}>
+          <View style={{paddingVertical: 8}}>
             <Button
-              bordered
-              danger
-              style={{padding: 5, borderRadius: 10}}
+              transparent
+              style={{padding: 5, marginHorizontal: 10, borderRadius: 10}}
               onPress={() => this.props.navigation.navigate('AddContact')}>
               <View style={{alignItems: 'center'}}>
-                <Icon
-                  style={{color: 'red'}}
-                  type={'Ionicons'}
-                  name={'ios-add-circle'}
-                />
-                <Text style={{fontSize: 11, fontWeight: 'bold'}}>CONTACT</Text>
+                <Icon type="Ionicons" name="ios-person-add" />
               </View>
             </Button>
           </View>
@@ -88,45 +89,47 @@ export default class Contact extends Component {
         <Content>
           <List>
             <List>
-              <ListItem itemDivider>
+              <ListItem itemDivider style={{backgroundColor: '#dfe4ea'}}>
                 <Text>KONTAK SAYA</Text>
               </ListItem>
             </List>
             {this.state.users
-              .filter(item => item._id !== this.state.currentUser.uid)
+              .filter(item => item._id !== firebase.auth().currentUser.uid)
               .map(item => {
                 let Image_Http_URL = {
                   uri: `https://ui-avatars.com/api/?size=256&rounded=true&name=${item.username}`,
                 };
                 console.log(item.status);
                 return (
-                  <Card style={{borderRadius: 10}}>
-                    <ListItem
-                      avatar
-                      onPress={() =>
-                        this.props.navigation.navigate('Profile', {
-                          userID: item._id,
-                          avatar: item.avatar,
-                          username: item.username,
-                          email: item.email,
-                          phoneNumber: item.phoneNumber,
-                          status: item.status,
-                        })
-                      }>
-                      <Left>
-                        <Thumbnail
-                          style={{marginVertical: -6}}
-                          source={Image_Http_URL}
-                        />
-                      </Left>
-                      <Body>
-                        <View style={{paddingTop: 5}}>
-                          <Text>{item.username}</Text>
-                          <Text note>{item.status}</Text>
-                        </View>
-                      </Body>
-                    </ListItem>
-                  </Card>
+                  <View style={{marginTop: 2, marginLeft: 10, marginRight: 10}}>
+                    <Card style={{borderRadius: 10}}>
+                      <ListItem
+                        avatar
+                        onPress={() =>
+                          this.props.navigation.navigate('Profile', {
+                            userID: item._id,
+                            avatar: item.avatar,
+                            username: item.username,
+                            email: item.email,
+                            phoneNumber: item.phoneNumber,
+                            status: item.status,
+                          })
+                        }>
+                        <Left>
+                          <Thumbnail
+                            style={{marginVertical: -6}}
+                            source={Image_Http_URL}
+                          />
+                        </Left>
+                        <Body>
+                          <View style={{paddingTop: 5}}>
+                            <Text>{item.username}</Text>
+                            <Text note>{item.status}</Text>
+                          </View>
+                        </Body>
+                      </ListItem>
+                    </Card>
+                  </View>
                 );
               })}
           </List>

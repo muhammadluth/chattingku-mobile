@@ -1,26 +1,49 @@
 import React, {Component} from 'react';
 import {View, Container} from 'native-base';
-import {ImageBackground, StyleSheet, Dimensions} from 'react-native';
+import {
+  ImageBackground,
+  StyleSheet,
+  Dimensions,
+  AsyncStorage,
+} from 'react-native';
 export default class Splashscreen extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {isLoading: true};
+    this.state = {
+      token: null,
+    };
   }
-  componentDidMount() {
+  async componentDidMount() {
+    try {
+      const value = await AsyncStorage.getItem('isLogined');
+      if (value !== null) {
+        this.setState({token: value});
+        console.log(value);
+      }
+      console.log(value);
+    } catch (error) {
+      console.log(error);
+    }
     setTimeout(() => {
-      this.props.navigation.navigate('Login');
+      if (this.state.token === null) {
+        this.props.navigation.navigate('Login');
+      }
     }, 2000);
   }
   render() {
+    console.log(this.state.token);
     return (
       <Container>
-        <View style={styles.content}>
-          <ImageBackground
-            source={require('../Assets/images/Logo.png')}
-            style={styles.Logo}
-          />
-        </View>
+        {this.state.token !== null ? (
+          this.props.navigation.navigate('Index')
+        ) : (
+          <View style={styles.content}>
+            <ImageBackground
+              source={require('../Assets/images/Logo.png')}
+              style={styles.Logo}
+            />
+          </View>
+        )}
       </Container>
     );
   }
